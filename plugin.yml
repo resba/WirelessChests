@@ -5,6 +5,3 @@ commands:
     wc:
         description: Demo Command that can only be seen by the user
         usage: /wc
-    wc2:
-        description: Demo Command that can be sent by the console as well as a user
-        usage: /wc2

@@ -15,6 +15,10 @@ public class WirelessChests extends JavaPlugin {
 		log.info("WirelessChests has been Enabled");
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
 	}
 	 
 	public void onDisable(){ 
@@ -27,9 +31,6 @@ public class WirelessChests extends JavaPlugin {
 		}
 	 
 		if (cmd.getName().equalsIgnoreCase("wc")){
-			player.sendMessage("Hello~");
-			return true;
-		} else if (cmd.getName().equalsIgnoreCase("wc2")) {
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
@@ -40,5 +41,6 @@ public class WirelessChests extends JavaPlugin {
 		return false;
 	}
 	private final WirelessChestsPlayerListener playerListener = new WirelessChestsPlayerListener(this);
+	private final WirelessChestsBlockListener blockListener = new WirelessChestsBlockListener(this);
 
 }
