@@ -1,7 +1,10 @@
 name: WirelessChests
 main: com.resbah.WirelessChests.WirelessChests
-version: 0.0.1-ALPHA by resba
+version: 0.0.2-ALPHA by resba
 commands:
     wc:
         description: Creates stone above the player's head
         usage: /wc
+    namechest:
+        description: Creates a chest below the user and returns variables
+        usage: /namechest [name]

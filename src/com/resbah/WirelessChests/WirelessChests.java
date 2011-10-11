@@ -3,6 +3,7 @@ package com.resbah.WirelessChests;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -45,6 +46,20 @@ public class WirelessChests extends JavaPlugin {
 				player.sendMessage("Look up!");
 			}
 			return true;
+		}
+		if(cmd.getName().equalsIgnoreCase("namechest")){
+			String chestname = args[0];
+			Location loc = player.getLocation();
+			World w = loc.getWorld();
+			loc.setY(loc.getY() - 1);
+			Block b = w.getBlockAt(loc);
+			b.setType(Material.CHEST);
+			int bn = w.getBlockTypeIdAt(loc);
+			player.sendMessage("Below you is a Chest with the following parameters:");
+			player.sendMessage("Location : " + loc);
+			player.sendMessage("Block : " + b);
+			player.sendMessage("New Type : " + bn);
+			player.sendMessage("Chest Name : " + chestname);
 		}
 		return false;
 	}
