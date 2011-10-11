@@ -23,7 +23,4 @@ public class WirelessChestsPlayerListener extends PlayerListener {
             // player.sendMessage("Your Y Coordinates : " + playerLoc.getY());
             // player.sendMessage("Your Z Coordinates : " + playerLoc.getZ());
     }
-    	}
-
-    
-
+}

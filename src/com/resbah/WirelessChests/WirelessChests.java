@@ -2,6 +2,9 @@ package com.resbah.WirelessChests;
 
 import java.util.logging.Logger;
 
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,7 +37,12 @@ public class WirelessChests extends JavaPlugin {
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
-				player.sendMessage("Hello~");
+	    		Location loc = player.getLocation();
+	    		World w = loc.getWorld();
+	    		loc.setY(loc.getY() + 5);
+	    		Block b = w.getBlockAt(loc);
+	    		b.setTypeId(1);
+				player.sendMessage("Look up!");
 			}
 			return true;
 		}
