@@ -8,20 +8,13 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.block.BlockPlaceEvent;
  
-/* Example Template
- * By Adamki11s
- * HUGE Plugin Tutorial
- */
- 
 public class WirelessChestsBlockListener extends BlockListener{
  
-        //You HAVE to have this!
         public static WirelessChests plugin;
        
         public WirelessChestsBlockListener(WirelessChests instance) {
                 plugin = instance;
         }
-        //You HAVE to have this!
  
         public void onBlockPlace(BlockPlaceEvent event){
                
@@ -29,7 +22,7 @@ public class WirelessChestsBlockListener extends BlockListener{
                 Block block = event.getBlock();
                 Material mat = block.getType();
  
-                player.sendMessage("You placed a block with ID : " + mat);//Display a message to the player telling them what type of block they placed.
+                player.sendMessage("You placed a block with ID : " + mat);
                 player.sendMessage("You have the item with the following ID in your hand : " + player.getItemInHand());
  
         }
