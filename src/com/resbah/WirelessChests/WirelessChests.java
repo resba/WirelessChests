@@ -48,6 +48,11 @@ public class WirelessChests extends JavaPlugin {
 			return true;
 		}
 		if(cmd.getName().equalsIgnoreCase("namechest")){
+			if(player == null) {
+				sender.sendMessage("This command can only be run by a player.");
+				return false;
+			}else{
+			if(args.length == 1){
 			String chestname = args[0];
 			Location loc = player.getLocation();
 			World w = loc.getWorld();
@@ -60,6 +65,13 @@ public class WirelessChests extends JavaPlugin {
 			player.sendMessage("Block : " + b);
 			player.sendMessage("New Type : " + bn);
 			player.sendMessage("Chest Name : " + chestname);
+			
+			}else{
+				player.sendMessage("Sorry! Your formatting is invalid. Please try again.");
+				return false;
+			}
+		}
+			return true;
 		}
 		return false;
 	}
