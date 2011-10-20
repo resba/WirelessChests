@@ -5,6 +5,12 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>WirelessChests</name>
   <url>http://www.resbah.com/</url>
+  <repositories>
+    <repository>
+      <id>bukkit-repo</id>
+      <url>http://repo.bukkit.org/artifactory/repo</url>
+    </repository>
+  </repositories>
   <build>
       <plugins>
           <plugin>
