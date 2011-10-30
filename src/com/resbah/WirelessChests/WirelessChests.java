@@ -1,6 +1,5 @@
 package com.resbah.WirelessChests;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
@@ -13,13 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 
 public class WirelessChests extends JavaPlugin {
 	Logger log = Logger.getLogger("Minecraft");
 	public void onEnable(){
-		Configuration CONFIG = new Configuration(new File(getDataFolder(), "config.yml"));
-		CONFIG.load();
 		log.info("WirelessChests has been Enabled");
 		PluginManager pm = this.getServer().getPluginManager();
 		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
@@ -27,13 +23,10 @@ public class WirelessChests extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
-		CONFIG.setProperty("chest.tick", 2);
 	}
 	 
 	public void onDisable(){ 
-		Configuration CONFIG = new Configuration(new File(getDataFolder(), "config.yml"));
 		log.info("WirelessChests has been Disabled");
-		CONFIG.save();
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player = null;
@@ -54,10 +47,8 @@ public class WirelessChests extends JavaPlugin {
 			}
 			return true;
 		}
-		if (cmd.getName().equalsIgnoreCase("tick")){
-			Configuration CONFIG = new Configuration(new File(getDataFolder(), "config.yml"));
-			CONFIG.load();
-			int tickrate = CONFIG.getInt("chest.tick", 0);
+
+/*		if (cmd.getName().equalsIgnoreCase("tick")){
 			if (player == null) {
 				sender.sendMessage("This command can only be run by a player.");
 			} else {
@@ -65,6 +56,7 @@ public class WirelessChests extends JavaPlugin {
 			}
 			return true;
 		}
+		*/
 		if(cmd.getName().equalsIgnoreCase("namechest")){
 			if(player == null) {
 				sender.sendMessage("This command can only be run by a player.");
