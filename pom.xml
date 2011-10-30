@@ -4,7 +4,7 @@
   <artifactId>WirelessChests</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>WirelessChests</name>
-  <url>http://pl.resbah.com/</url>
+  <url>http://maven.apache.org/</url>
   <packaging>jar</packaging>
   <repositories>
     <repository>
