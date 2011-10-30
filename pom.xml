@@ -4,7 +4,8 @@
   <artifactId>WirelessChests</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>WirelessChests</name>
-  <url>http://www.resbah.com/</url>
+  <url>http://pl.resbah.com/</url>
+  <packaging>jar</packaging>
   <repositories>
     <repository>
       <id>bukkit-repo</id>
