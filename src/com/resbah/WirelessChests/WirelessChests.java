@@ -109,7 +109,7 @@ public class WirelessChests extends JavaPlugin {
 			player.sendMessage("Block : " + b);
 			player.sendMessage("New Type : " + bn);
 			player.sendMessage("Chest Name : " + chestname);
-			this.getConfig().set("chest." + chestname, b.getLocation());
+			this.getConfig().set("chest." + chestname, chestname);
 			if (this.getConfig().get("group." + groupname) == null){
 			this.getConfig().set("group." + groupname, true);
 			}
