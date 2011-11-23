@@ -7,7 +7,7 @@ commands:
         usage: /wc
     namechest:
         description: Creates a chest below the user and returns variables
-        usage: /namechest [name]
-    tick:
-        description: displays tick from config
-        usage: /tick
+        usage: /namechest [name] [group] [default]
+    sync:
+        description: basic usage of sync
+        usage: /sync [group]

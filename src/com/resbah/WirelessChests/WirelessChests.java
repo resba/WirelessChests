@@ -1,7 +1,8 @@
 package com.resbah.WirelessChests;
 
+import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Logger;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -50,15 +51,53 @@ public class WirelessChests extends JavaPlugin {
 			}
 			return true;
 		}
+		if (cmd.getName().equalsIgnoreCase("sync")){
+			if (player == null) {
+				sender.sendMessage("this command can only be run by a player");
+			} else {
+			if(args.length == 1){
+				String group = args[0];
+				/*
+				String defaultchest = this.getConfig().getString("defaults."+group);
+				int x = this.getConfig().getInt("group."+group+"."+defaultchest+".x");
+				int y = this.getConfig().getInt("group."+group+"."+defaultchest+".y");
+				int z = this.getConfig().getInt("group."+group+"."+defaultchest+".z");
+				*/
+				
+				Set<String> keys = this.getConfig().getConfigurationSection("group."+group).getKeys(false);
+				Iterator<String> iter = keys.iterator();
+				while (iter.hasNext()) {
+					player.sendMessage(iter.next());
+				}
+				
+				
+				/*
+				Location loc = player.getLocation();
+				World w = loc.getWorld();
+				Block b = w.getBlockAt(x, y, z);
+				int bty = b.getTypeId();
+				if(bty != 54){
+					player.sendMessage("Error! Main Chest is not located here! Are you sure your in the same world as the chest?");
+				}else{
+					
+				}
+				*/
+				
+				
+			}
+			}
+			return true;
+		}
 
 		if(cmd.getName().equalsIgnoreCase("namechest")){
 			if(player == null) {
 				sender.sendMessage("This command can only be run by a player.");
 				return false;
 			}else{
-			if(args.length == 2){
+			if(args.length == 3){
 			String chestname = args[0];
 			String groupname = args[1];
+			String defaultchest = args[2];
 			Location loc = player.getLocation();
 			World w = loc.getWorld();
 			loc.setY(loc.getY() - 1);
@@ -70,16 +109,18 @@ public class WirelessChests extends JavaPlugin {
 			player.sendMessage("Block : " + b);
 			player.sendMessage("New Type : " + bn);
 			player.sendMessage("Chest Name : " + chestname);
-			String strint = w.getBlockAt(loc).getLocation().toString();
-			this.getConfig().set("chest." + chestname, strint);
+			this.getConfig().set("chest." + chestname, b.getLocation());
 			if (this.getConfig().get("group." + groupname) == null){
 			this.getConfig().set("group." + groupname, true);
-			this.getConfig().set("group." + groupname +"."+chestname, chestname);
-			this.getConfig().set("group." + groupname +"."+chestname, strint);
-			}else{
-				this.getConfig().set("group." + groupname +"."+chestname, chestname);
-				this.getConfig().set("group." + groupname +"."+chestname, strint);
 			}
+			this.getConfig().set("group." + groupname +"."+chestname+".chestname", chestname);
+			this.getConfig().set("group." + groupname +"."+chestname+".x", loc.getX());
+			this.getConfig().set("group." + groupname +"."+chestname+".y", loc.getY());
+			this.getConfig().set("group." + groupname +"."+chestname+".z", loc.getZ());
+			if(defaultchest == "1"){
+				this.getConfig().set("defaults."+groupname, chestname);
+			}
+			this.getConfig().set("group."+groupname+"."+chestname+".default", defaultchest);
 			this.saveConfig();
 			this.reloadConfig();
 			}else{
