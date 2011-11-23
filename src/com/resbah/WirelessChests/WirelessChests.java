@@ -1,9 +1,5 @@
 package com.resbah.WirelessChests;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Location;
@@ -12,8 +8,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
@@ -21,35 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class WirelessChests extends JavaPlugin {
 	Logger log = Logger.getLogger("Minecraft");
-	private FileConfiguration chestConfig = null;
-	private File chestConfigFile = new File("chestConfig.yml");
-	 
-	public FileConfiguration getChestConfig() {
-	    if (chestConfig == null) {
-	        reloadChestConfig();
-	    }
-	    return chestConfig;
-	}
-	 
-	public void reloadChestConfig() {
-	    chestConfig = YamlConfiguration.loadConfiguration(chestConfigFile);
-	 
-	    // Look for defaults in the jar
-	    InputStream defConfigStream = getResource("chestConfig.yml");
-	    if (defConfigStream != null) {
-	        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-	 
-	        chestConfig.setDefaults(defConfig);
-	    }
-	}
-	 
-	public void saveChestConfig() {
-	    try {
-	        chestConfig.save(chestConfigFile);
-	    } catch (IOException ex) {
-	        Logger.getLogger(JavaPlugin.class.getName()).log(Level.SEVERE, "Could not save config to " + chestConfigFile, ex);
-	    }
-	}
+	
 	public void onEnable(){
 		log.info("WirelessChests has been Enabled");
 		PluginManager pm = this.getServer().getPluginManager();
@@ -58,6 +24,7 @@ public class WirelessChests extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
+		this.getConfig().options().copyDefaults(true);
 	}
 	 
 	public void onDisable(){ 
@@ -101,9 +68,9 @@ public class WirelessChests extends JavaPlugin {
 			player.sendMessage("Block : " + b);
 			player.sendMessage("New Type : " + bn);
 			player.sendMessage("Chest Name : " + chestname);
-			getChestConfig().set("chest." + chestname, loc);
-			saveChestConfig();
-			reloadChestConfig();
+			this.getConfig().set("chest." + chestname, loc);
+			this.saveConfig();
+			this.reloadConfig();
 			}else{
 				player.sendMessage("Sorry! Your formatting is invalid. Please try again.");
 				return false;
