@@ -114,9 +114,9 @@ public class WirelessChests extends JavaPlugin {
 			this.getConfig().set("group." + groupname, true);
 			}
 			this.getConfig().set("group." + groupname +"."+chestname+".chestname", chestname);
-			this.getConfig().set("group." + groupname +"."+chestname+".x", loc.getX());
-			this.getConfig().set("group." + groupname +"."+chestname+".y", loc.getY());
-			this.getConfig().set("group." + groupname +"."+chestname+".z", loc.getZ());
+			this.getConfig().set("group." + groupname +"."+chestname+".x", loc.getBlockX());
+			this.getConfig().set("group." + groupname +"."+chestname+".y", loc.getBlockY());
+			this.getConfig().set("group." + groupname +"."+chestname+".z", loc.getBlockZ());
 			if(defaultchest == "1"){
 				this.getConfig().set("defaults."+groupname, chestname);
 			}
