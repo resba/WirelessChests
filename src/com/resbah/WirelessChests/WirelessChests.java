@@ -25,6 +25,7 @@ public class WirelessChests extends JavaPlugin {
 		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Event.Priority.Normal, this);
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
 		this.getConfig().options().copyDefaults(true);
+		this.saveConfig();
 	}
 	 
 	public void onDisable(){ 
