@@ -62,10 +62,12 @@ public class WirelessChests extends JavaPlugin {
 				int dx = this.getConfig().getInt("group."+group+"."+dc+".x");
 				int dy = this.getConfig().getInt("group."+group+"."+dc+".y");
 				int dz = this.getConfig().getInt("group."+group+"."+dc+".z");
-				Location dloc = player.getLocation();
-				World dw = dloc.getWorld();
+				World dw = player.getWorld();
 				Block db = dw.getBlockAt(dx, dy, dz);
 				int dbty = db.getTypeId();
+				player.sendMessage("World of Block:" +dw);
+				player.sendMessage("Location of block: "+db);
+				player.sendMessage("ID of block: "+dbty);
 				if(dbty != 54){
 					player.sendMessage("Error! Main Chest is not located here! Are you sure your in the same world as the chest?");
 				}else{
