@@ -55,8 +55,9 @@ public class WirelessChests extends JavaPlugin {
 				sender.sendMessage("This command can only be run by a player.");
 				return false;
 			}else{
-			if(args.length == 1){
+			if(args.length == 2){
 			String chestname = args[0];
+			String groupname = args[1];
 			Location loc = player.getLocation();
 			World w = loc.getWorld();
 			loc.setY(loc.getY() - 1);
@@ -68,7 +69,16 @@ public class WirelessChests extends JavaPlugin {
 			player.sendMessage("Block : " + b);
 			player.sendMessage("New Type : " + bn);
 			player.sendMessage("Chest Name : " + chestname);
-			this.getConfig().set("chest." + chestname, loc);
+			String strint = w.getBlockAt(loc).getLocation().toString();
+			this.getConfig().set("chest." + chestname, strint);
+			if (this.getConfig().get("group." + groupname) == null){
+			this.getConfig().set("group." + groupname, true);
+			this.getConfig().set("group." + groupname +"."+chestname, chestname);
+			this.getConfig().set("group." + groupname +"."+chestname, strint);
+			}else{
+				this.getConfig().set("group." + groupname +"."+chestname, chestname);
+				this.getConfig().set("group." + groupname +"."+chestname, strint);
+			}
 			this.saveConfig();
 			this.reloadConfig();
 			}else{
