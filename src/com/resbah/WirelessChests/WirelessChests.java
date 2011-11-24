@@ -7,10 +7,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -33,6 +35,7 @@ public class WirelessChests extends JavaPlugin {
 		this.saveConfig();
 		log.info("WirelessChests has been Disabled");
 	}
+	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		Player player = null;
 		if (sender instanceof Player) {
@@ -61,7 +64,7 @@ public class WirelessChests extends JavaPlugin {
 	    			String chest = args[0];
 	    			if(this.getConfig().get("group."+group) != null){
 	    				if(this.getConfig().get("group."+group+"."+chest) != null){
-	    					this.getConfig().set("defaultchest."+group, chest);
+	    					this.getConfig().set("defaults."+group, chest);
 	    					player.sendMessage("Done!");
 	    					this.saveConfig();
 	    					this.reloadConfig();
@@ -93,10 +96,11 @@ public class WirelessChests extends JavaPlugin {
 				player.sendMessage("World of Block:" +dw);
 				player.sendMessage("Location of block: "+db);
 				player.sendMessage("ID of block: "+dbty);
+				Chest dchst = (Chest)db;
 				if(dbty != 54){
 					player.sendMessage("Error! Main Chest is not located here! Are you sure your in the same world as the chest?");
 				}else{
-					byte main = db.getData();
+					Inventory maininv = dchst.getInventory();
 				
 				
 					Set<String> keys = this.getConfig().getConfigurationSection("group."+group).getKeys(false);
@@ -107,20 +111,20 @@ public class WirelessChests extends JavaPlugin {
 							int x = this.getConfig().getInt("group."+group+"."+cnam+".x");
 							int y = this.getConfig().getInt("group."+group+"."+cnam+".y");
 							int z = this.getConfig().getInt("group."+group+"."+cnam+".z");
-							String d = this.getConfig().getString("defaults."+group);
 							Location loc = player.getLocation();
 							World w = loc.getWorld();
 							Block b = w.getBlockAt(x, y, z);
 							int bty = b.getTypeId();
+							Chest chst = (Chest)b;
+							
 							if(bty != 54){
 								player.sendMessage("Error! Chest is not located here! Are you sure your in the same world as the chest?");
 								}else{
-										if(d == cnam){
-											player.sendMessage(cnam+" is a Main Chest.");
-										}else{
-											b.setData(main);
-											player.sendMessage(cnam+" Synced with Main Chest "+dc+".");
-						}
+								@SuppressWarnings("unused")
+								Inventory tchst = chst.getInventory();
+								tchst = maininv;
+								player.sendMessage(cnam+" Synced with Main Chest "+dc+".");
+						
 					}
 					}
 				}
