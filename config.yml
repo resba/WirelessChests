@@ -1,2 +1,4 @@
 tick: 5
 chest:
+group:
+defaults:

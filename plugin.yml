@@ -1,18 +1,45 @@
 name: WirelessChests
 main: com.resbah.WirelessChests.WirelessChests
-version: 0.0.3-ALPHA by resba
+version: v0.5 by resba
 commands:
     wcaddchest:
         description: Creates a chest below the user and returns variables
-        usage: /namechest [name] [group]
+        usage: /wcaddchest [name] [group]
     wcsync:
         description: basic usage of sync
-        usage: /sync [group]
+        usage: /wcsync [group]
     wcsetmain:
         description: Sets a chest as Main Chest
-        usage: /dchest [name] [group]
+        usage: /wcsetmain [name] [group]
     wcrem:
         description: Remove Chest. (If the chest is a main chest, then it's removed from the list)
         usage: /wcrem [name] [group]
+    wcremgroup:
+        description: Removes specified Group
+        usage: /wcremgroup [group]
     wcabout:
         description: Displays Version Information and Relative info.
+        usage: /wcabout
+
+permissions:
+    wirelesschests.*:
+        description: Allows access to all commands
+        children:
+            wirelesschests.add:
+                description: If true, allows user to use /wcaddchest
+                default: false
+            wirelesschests.remove:
+                description: If true, allows user to use /wcrem
+                default: false
+            wirelesschests.removegroup:
+                description: If true, allows user to use /wcremgroup
+                default: false
+            wirelesschests.sync:
+                description: If true, allows user to use /wcremgroup
+                default: false
+            wirelesschests.setmain:
+                description: If true, allows user to use /wcremgroup
+                default: false
+            wirelesschests.about:
+                description: If true, allows user to use /wcremgroup
+                default: true

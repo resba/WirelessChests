@@ -38,6 +38,7 @@ public class WirelessChests extends JavaPlugin {
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
+				if(player.hasPermission("wirelesschests.remove")){
 	    		if(args.length == 2){
 	    			String chest = args[0];
 	    			String group = args[1];
@@ -50,13 +51,18 @@ public class WirelessChests extends JavaPlugin {
 	    			this.saveConfig();
 	    			this.reloadConfig();
 	    		}
+			}else{
+				player.sendMessage("You do not have permission to preform this command!");
+			}
 			}
 			return true;
 		}
+			
 		if (cmd.getName().equalsIgnoreCase("wcremgroup")){
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
+				if(player.hasPermission("wirelesschests.removegroup")){
 	    		if(args.length == 2){
 	    			String group = args[1];
 	    			this.getConfig().set("group."+group, null);
@@ -65,20 +71,28 @@ public class WirelessChests extends JavaPlugin {
 	    		}
 	    			this.saveConfig();
 	    			this.reloadConfig();
-	    		}
+	    		}else{
+					player.sendMessage("You do not have permission to preform this command!");
+				}
+			}
 			return true;
 			}
 			
 		if (cmd.getName().equalsIgnoreCase("wcabout")){
+			if(player.hasPermission("wirelesschests.about")){
 				sender.sendMessage("WirelessChests by resba");
 				sender.sendMessage("Version 0.0.3-ALPHA");
 				sender.sendMessage("https://www.github.com/resba/WirelessChests");
+			}else{
+				player.sendMessage("You do not have permission to preform this command!");
+			}
 			return true;
 		}
 		if (cmd.getName().equalsIgnoreCase("wcsetmain")){
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
+				if(player.hasPermission("wirelesschests.setmain")){
 	    		if(args.length == 2){
 	    			String group = args[1];
 	    			String chest = args[0];
@@ -96,6 +110,9 @@ public class WirelessChests extends JavaPlugin {
 	    			}
 	    			
 	    		}
+				}else{
+					player.sendMessage("You do not have permission to preform this command!");
+				}
 			}
 			return true;
 		}
@@ -103,6 +120,7 @@ public class WirelessChests extends JavaPlugin {
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
+				if(player.hasPermission("wirelesschests.sync")){
 			if(args.length == 1){
 				String group = args[0];
 				if(this.getConfig().getString("defaults."+group) != null){
@@ -138,6 +156,9 @@ public class WirelessChests extends JavaPlugin {
 					player.sendMessage("Error! You haven't set a Main chest yet. Do so with /wcsync [chest name] [group name]");
 				}
 				
+			}else{
+				player.sendMessage("You do not have permission to preform this command!");
+			}
 			}
 				
 			return true;
@@ -148,6 +169,7 @@ public class WirelessChests extends JavaPlugin {
 				sender.sendMessage("This command can only be run by a player.");
 				return false;
 			}else{
+				if(player.hasPermission("wirelesschests.add")){
 			if(args.length == 2){
 			String chestname = args[0];
 			String groupname = args[1];
@@ -174,7 +196,10 @@ public class WirelessChests extends JavaPlugin {
 				player.sendMessage("Sorry! Your formatting is invalid. Please try again.");
 				return false;
 			}
-		}
+		}else{
+				player.sendMessage("You do not have permission to preform this command!");
+			}
+			}
 			return true;
 		}
 		return false;
