@@ -51,6 +51,27 @@ public class WirelessChests extends JavaPlugin {
 			}
 			return true;
 		}
+		if (cmd.getName().equalsIgnoreCase("dchest")){
+			if (player == null) {
+				sender.sendMessage("this command can only be run by a player");
+			} else {
+	    		if(args.length == 1){
+	    			String group = args[0];
+	    			String chest = args[1];
+	    			if(this.getConfig().get("group."+group) != null){
+	    				if(this.getConfig().get("group."+group+"."+chest) != null){
+	    					this.getConfig().set("defaults."+group, chest);
+	    				}else{
+	    					player.sendMessage("Chest does not exist!");
+	    				}
+	    			}else{
+	    				player.sendMessage("Group does not exist!");
+	    			}
+	    			
+	    		}
+			}
+			return true;
+		}
 		if (cmd.getName().equalsIgnoreCase("sync")){
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
@@ -74,26 +95,27 @@ public class WirelessChests extends JavaPlugin {
 					byte main = db.getData();
 				
 				
-				Set<String> keys = this.getConfig().getConfigurationSection("group."+group).getKeys(false);
-				Iterator<String> iter = keys.iterator();
-				while (iter.hasNext()) {
-					player.sendMessage(iter.next());
-					int x = this.getConfig().getInt("group."+group+"."+iter.next()+".x");
-					int y = this.getConfig().getInt("group."+group+"."+iter.next()+".y");
-					int z = this.getConfig().getInt("group."+group+"."+iter.next()+".z");
-					String d = this.getConfig().getString("group."+group+"."+iter.next()+".default");
-					Location loc = player.getLocation();
-					World w = loc.getWorld();
-					Block b = w.getBlockAt(x, y, z);
-					int bty = b.getTypeId();
-					if(bty != 54){
-						player.sendMessage("Error! Chest is not located here! Are you sure your in the same world as the chest?");
-					}else{
-						if(d == "'1'"){
-							player.sendMessage(iter.next()+" is a Main Chest.");
-						}else{
-							b.setData(main);
-							player.sendMessage(iter.next()+" Synced with Main Chest "+dc+".");
+					Set<String> keys = this.getConfig().getConfigurationSection("group."+group).getKeys(false);
+					Iterator<String> iter = keys.iterator();
+						while (iter.hasNext()) {
+							String cnam = iter.next();
+							player.sendMessage(iter.next());
+							int x = this.getConfig().getInt("group."+group+"."+cnam+".x");
+							int y = this.getConfig().getInt("group."+group+"."+cnam+".y");
+							int z = this.getConfig().getInt("group."+group+"."+cnam+".z");
+							String d = this.getConfig().getString("defaults."+group);
+							Location loc = player.getLocation();
+							World w = loc.getWorld();
+							Block b = w.getBlockAt(x, y, z);
+							int bty = b.getTypeId();
+							if(bty != 54){
+								player.sendMessage("Error! Chest is not located here! Are you sure your in the same world as the chest?");
+								}else{
+										if(d == cnam){
+											player.sendMessage(cnam+" is a Main Chest.");
+										}else{
+											b.setData(main);
+											player.sendMessage(cnam+" Synced with Main Chest "+dc+".");
 						}
 					}
 					}
@@ -138,7 +160,7 @@ public class WirelessChests extends JavaPlugin {
 			this.getConfig().set("group." + groupname +"."+chestname+".x", loc.getBlockX());
 			this.getConfig().set("group." + groupname +"."+chestname+".y", loc.getBlockY());
 			this.getConfig().set("group." + groupname +"."+chestname+".z", loc.getBlockZ());
-			if(defaultchest == "'1'"){
+			if(defaultchest == "true"){
 				this.getConfig().set("defaults."+groupname, chestname);
 			}
 			this.getConfig().set("group."+groupname+"."+chestname+".default", defaultchest);

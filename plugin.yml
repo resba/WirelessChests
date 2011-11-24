@@ -11,3 +11,6 @@ commands:
     sync:
         description: basic usage of sync
         usage: /sync [group]
+    dchest:
+        description: Sets a chest as Main Chest
+        usage: /dchest [group] [name]
