@@ -30,6 +30,7 @@ public class WirelessChests extends JavaPlugin {
 	}
 	 
 	public void onDisable(){ 
+		this.saveConfig();
 		log.info("WirelessChests has been Disabled");
 	}
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -60,7 +61,10 @@ public class WirelessChests extends JavaPlugin {
 	    			String chest = args[0];
 	    			if(this.getConfig().get("group."+group) != null){
 	    				if(this.getConfig().get("group."+group+"."+chest) != null){
-	    					this.getConfig().set("defaults."+group, chest);
+	    					this.getConfig().set("defaultchest."+group, chest);
+	    					player.sendMessage("Done!");
+	    					this.saveConfig();
+	    					this.reloadConfig();
 	    				}else{
 	    					player.sendMessage("Chest does not exist!");
 	    				}
