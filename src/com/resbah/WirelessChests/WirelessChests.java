@@ -11,10 +11,8 @@ import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class WirelessChests extends JavaPlugin {
@@ -22,12 +20,6 @@ public class WirelessChests extends JavaPlugin {
 	
 	public void onEnable(){
 		log.info("WirelessChests has been Enabled");
-		PluginManager pm = this.getServer().getPluginManager();
-		pm.registerEvent(Event.Type.PLAYER_MOVE, playerListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Event.Priority.Normal, this);
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
 	}
@@ -42,20 +34,6 @@ public class WirelessChests extends JavaPlugin {
 		if (sender instanceof Player) {
 			player = (Player) sender;
 		}
-	 
-		if (cmd.getName().equalsIgnoreCase("wc")){
-			if (player == null) {
-				sender.sendMessage("this command can only be run by a player");
-			} else {
-	    		Location loc = player.getLocation();
-	    		World w = loc.getWorld();
-	    		loc.setY(loc.getY() + 5);
-	    		Block b = w.getBlockAt(loc);
-	    		b.setTypeId(1);
-				player.sendMessage("Look up!");
-			}
-			return true;
-		}
 		if (cmd.getName().equalsIgnoreCase("wcrem")){
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
@@ -64,13 +42,33 @@ public class WirelessChests extends JavaPlugin {
 	    			String chest = args[0];
 	    			String group = args[1];
 	    			this.getConfig().set("group."+group+"."+chest, null);
+	    			player.sendMessage("Chest removed successfully!");
 	    			if(this.getConfig().getString("defaults."+group) == chest){
 	    				this.getConfig().set("defaults."+group,null);
+	    				player.sendMessage("Chest was a Main chest. Removed from Main Chest List Successfully!");
 	    			}
+	    			this.saveConfig();
+	    			this.reloadConfig();
 	    		}
 			}
 			return true;
 		}
+		if (cmd.getName().equalsIgnoreCase("wcremgroup")){
+			if (player == null) {
+				sender.sendMessage("this command can only be run by a player");
+			} else {
+	    		if(args.length == 2){
+	    			String group = args[1];
+	    			this.getConfig().set("group."+group, null);
+	    			this.getConfig().set("defaults."+group,null);
+	    			player.sendMessage("Group removed successfully!");
+	    		}
+	    			this.saveConfig();
+	    			this.reloadConfig();
+	    		}
+			return true;
+			}
+			
 		if (cmd.getName().equalsIgnoreCase("wcabout")){
 				sender.sendMessage("WirelessChests by resba");
 				sender.sendMessage("Version 0.0.3-ALPHA");
@@ -114,11 +112,6 @@ public class WirelessChests extends JavaPlugin {
 				int dz = this.getConfig().getInt("group."+group+"."+dc+".z");
 				World dw = player.getWorld();
 				Block db = dw.getBlockAt(dx, dy, dz);
-				int dbty = db.getTypeId();
-				player.sendMessage(dx +" "+ dy +" "+ dz);
-				player.sendMessage("World of Block:" +dw);
-				player.sendMessage("Location of block: "+db);
-				player.sendMessage("ID of block: "+dbty);
 				Chest dchst = (Chest)db.getState();
 				Inventory maininv = dchst.getInventory();
 				ItemStack[] mainstack = maininv.getContents();
@@ -128,17 +121,11 @@ public class WirelessChests extends JavaPlugin {
 					Iterator<String> iter = keys.iterator();
 						while (iter.hasNext()) {
 							String cnames = iter.next();
-							player.sendMessage(iter.next());
 							int x = this.getConfig().getInt("group."+group+"."+cnames+".x");
 							int y = this.getConfig().getInt("group."+group+"."+cnames+".y");
 							int z = this.getConfig().getInt("group."+group+"."+cnames+".z");
 							World w = player.getWorld();
 							Block b = w.getBlockAt(x, y, z);
-							int bty = b.getTypeId();
-							player.sendMessage(x +" "+ y +" "+ z);
-							player.sendMessage("World of Block:" +w);
-							player.sendMessage("Location of block: "+b);
-							player.sendMessage("ID of block: "+bty);
 							Chest chst = (Chest)b.getState();
 							Inventory tchst = chst.getInventory();
 							tchst.setContents(mainstack);
@@ -168,13 +155,11 @@ public class WirelessChests extends JavaPlugin {
 			World w = loc.getWorld();
 			loc.setY(loc.getY() - 1);
 			Block b = w.getBlockAt(loc);
+			int bid = b.getTypeId();
+			if(bid!=54){
 			b.setType(Material.CHEST);
-			int bn = w.getBlockTypeIdAt(loc);
-			player.sendMessage("Below you is a Chest with the following parameters:");
-			player.sendMessage("Location : " + loc);
-			player.sendMessage("Block : " + b);
-			player.sendMessage("New Type : " + bn);
-			player.sendMessage("Chest Name : " + chestname);
+			}
+			player.sendMessage("Created chest "+chestname+" inside group "+groupname+"!");
 			this.getConfig().set("chest." + chestname, chestname);
 			if (this.getConfig().get("group." + groupname) == null){
 			this.getConfig().set("group." + groupname, true);
@@ -194,7 +179,5 @@ public class WirelessChests extends JavaPlugin {
 		}
 		return false;
 	}
-	private final WirelessChestsPlayerListener playerListener = new WirelessChestsPlayerListener(this);
-	private final WirelessChestsBlockListener blockListener = new WirelessChestsBlockListener(this);
 
 }
