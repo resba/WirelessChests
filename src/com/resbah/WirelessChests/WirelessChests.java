@@ -56,7 +56,28 @@ public class WirelessChests extends JavaPlugin {
 			}
 			return true;
 		}
-		if (cmd.getName().equalsIgnoreCase("dchest")){
+		if (cmd.getName().equalsIgnoreCase("wcrem")){
+			if (player == null) {
+				sender.sendMessage("this command can only be run by a player");
+			} else {
+	    		if(args.length == 2){
+	    			String chest = args[0];
+	    			String group = args[1];
+	    			this.getConfig().set("group."+group+"."+chest, null);
+	    			if(this.getConfig().getString("defaults."+group) == chest){
+	    				this.getConfig().set("defaults."+group,null);
+	    			}
+	    		}
+			}
+			return true;
+		}
+		if (cmd.getName().equalsIgnoreCase("wcabout")){
+				sender.sendMessage("WirelessChests by resba");
+				sender.sendMessage("Version 0.0.3-ALPHA");
+				sender.sendMessage("https://www.github.com/resba/WirelessChests");
+			return true;
+		}
+		if (cmd.getName().equalsIgnoreCase("wcsetmain")){
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
@@ -80,7 +101,7 @@ public class WirelessChests extends JavaPlugin {
 			}
 			return true;
 		}
-		if (cmd.getName().equalsIgnoreCase("sync")){
+		if (cmd.getName().equalsIgnoreCase("wcsync")){
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
@@ -106,22 +127,28 @@ public class WirelessChests extends JavaPlugin {
 					Set<String> keys = this.getConfig().getConfigurationSection("group."+group).getKeys(false);
 					Iterator<String> iter = keys.iterator();
 						while (iter.hasNext()) {
+							String cnames = iter.next();
 							player.sendMessage(iter.next());
-							int cx = this.getConfig().getInt("group."+group+"."+iter.hasNext()+".x");
-							int cy = this.getConfig().getInt("group."+group+"."+iter.hasNext()+".y");
-							int cz = this.getConfig().getInt("group."+group+"."+iter.hasNext()+".z");
+							int x = this.getConfig().getInt("group."+group+"."+cnames+".x");
+							int y = this.getConfig().getInt("group."+group+"."+cnames+".y");
+							int z = this.getConfig().getInt("group."+group+"."+cnames+".z");
 							World w = player.getWorld();
-							Block cb = w.getBlockAt(cx, cy, cz);
-							Chest chst = (Chest)cb.getState();
+							Block b = w.getBlockAt(x, y, z);
+							int bty = b.getTypeId();
+							player.sendMessage(x +" "+ y +" "+ z);
+							player.sendMessage("World of Block:" +w);
+							player.sendMessage("Location of block: "+b);
+							player.sendMessage("ID of block: "+bty);
+							Chest chst = (Chest)b.getState();
 							Inventory tchst = chst.getInventory();
 							tchst.setContents(mainstack);
-							player.sendMessage(iter.hasNext()+" Synced with Main Chest "+dc+".");
+							player.sendMessage(cnames+" Synced with Main Chest "+dc+".");
 					}
 				}
 				
 				
 				}else{
-					player.sendMessage("Error! You haven't set a Main chest yet. Do so with /dchest [chest name] [group name]");
+					player.sendMessage("Error! You haven't set a Main chest yet. Do so with /wcsync [chest name] [group name]");
 				}
 				
 			}
@@ -129,7 +156,7 @@ public class WirelessChests extends JavaPlugin {
 			return true;
 			}
 
-		if(cmd.getName().equalsIgnoreCase("namechest")){
+		if(cmd.getName().equalsIgnoreCase("wcaddchest")){
 			if(player == null) {
 				sender.sendMessage("This command can only be run by a player.");
 				return false;
