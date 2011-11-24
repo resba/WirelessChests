@@ -55,9 +55,9 @@ public class WirelessChests extends JavaPlugin {
 			if (player == null) {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
-	    		if(args.length == 1){
-	    			String group = args[0];
-	    			String chest = args[1];
+	    		if(args.length == 2){
+	    			String group = args[1];
+	    			String chest = args[0];
 	    			if(this.getConfig().get("group."+group) != null){
 	    				if(this.getConfig().get("group."+group+"."+chest) != null){
 	    					this.getConfig().set("defaults."+group, chest);
@@ -78,7 +78,7 @@ public class WirelessChests extends JavaPlugin {
 			} else {
 			if(args.length == 1){
 				String group = args[0];
-				
+				if(this.getConfig().getString("defaults."+group) != null){
 				String dc = this.getConfig().getString("defaults."+group);
 				int dx = this.getConfig().getInt("group."+group+"."+dc+".x");
 				int dy = this.getConfig().getInt("group."+group+"."+dc+".y");
@@ -122,7 +122,9 @@ public class WirelessChests extends JavaPlugin {
 				}
 				
 				
-				
+				}else{
+					player.sendMessage("Error! You haven't set a Main chest yet. Do so with /dchest [chest name] [group name]");
+				}
 				
 				
 				
@@ -137,10 +139,9 @@ public class WirelessChests extends JavaPlugin {
 				sender.sendMessage("This command can only be run by a player.");
 				return false;
 			}else{
-			if(args.length == 3){
+			if(args.length == 2){
 			String chestname = args[0];
 			String groupname = args[1];
-			String defaultchest = args[2];
 			Location loc = player.getLocation();
 			World w = loc.getWorld();
 			loc.setY(loc.getY() - 1);
@@ -160,10 +161,6 @@ public class WirelessChests extends JavaPlugin {
 			this.getConfig().set("group." + groupname +"."+chestname+".x", loc.getBlockX());
 			this.getConfig().set("group." + groupname +"."+chestname+".y", loc.getBlockY());
 			this.getConfig().set("group." + groupname +"."+chestname+".z", loc.getBlockZ());
-			if(defaultchest == "true"){
-				this.getConfig().set("defaults."+groupname, chestname);
-			}
-			this.getConfig().set("group."+groupname+"."+chestname+".default", defaultchest);
 			this.saveConfig();
 			this.reloadConfig();
 			}else{
