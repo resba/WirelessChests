@@ -32,17 +32,5 @@
       <type>jar</type>
       <scope>compile</scope>
    </dependency>
-   <dependency>
-      <groupId>com.resbah.wirelesschests</groupId>
-      <artifactId>config</artifactId>
-      <version>1.0.0</version>
-      <type>yml</type>
-   </dependency>
-   <dependency>
-      <groupId>com.resbah.wirelesschests</groupId>
-      <artifactId>plugin</artifactId>
-      <version>1.0.0</version>
-      <type>yml</type>
-   </dependency>
   </dependencies>
 </project>
