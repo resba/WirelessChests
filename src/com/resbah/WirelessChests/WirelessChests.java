@@ -94,39 +94,28 @@ public class WirelessChests extends JavaPlugin {
 				World dw = player.getWorld();
 				Block db = dw.getBlockAt(dx, dy, dz);
 				int dbty = db.getTypeId();
+				player.sendMessage(dx +" "+ dy +" "+ dz);
 				player.sendMessage("World of Block:" +dw);
 				player.sendMessage("Location of block: "+db);
 				player.sendMessage("ID of block: "+dbty);
 				Chest dchst = (Chest)db.getState();
-				if(dbty != 54){
-					player.sendMessage("Error! Main Chest is not located here! Are you sure your in the same world as the chest?");
-				}else{
-					Inventory maininv = dchst.getInventory();
-					ItemStack[] mainstack = maininv.getContents();
+				Inventory maininv = dchst.getInventory();
+				ItemStack[] mainstack = maininv.getContents();
 				
 				
 					Set<String> keys = this.getConfig().getConfigurationSection("group."+group).getKeys(false);
 					Iterator<String> iter = keys.iterator();
 						while (iter.hasNext()) {
-							String cnam = iter.next();
 							player.sendMessage(iter.next());
-							int x = this.getConfig().getInt("group."+group+"."+cnam+".x");
-							int y = this.getConfig().getInt("group."+group+"."+cnam+".y");
-							int z = this.getConfig().getInt("group."+group+"."+cnam+".z");
-							Location loc = player.getLocation();
-							World w = loc.getWorld();
-							Block b = w.getBlockAt(x, y, z);
-							int bty = b.getTypeId();
-							Chest chst = (Chest)b.getState();
-							
-							if(bty != 54){
-								player.sendMessage("Error! Chest is not located here! Are you sure your in the same world as the chest?");
-								}else{
-								Inventory tchst = chst.getInventory();
-								tchst.setContents(mainstack);
-								player.sendMessage(cnam+" Synced with Main Chest "+dc+".");
-						
-					}
+							int cx = this.getConfig().getInt("group."+group+"."+iter.hasNext()+".x");
+							int cy = this.getConfig().getInt("group."+group+"."+iter.hasNext()+".y");
+							int cz = this.getConfig().getInt("group."+group+"."+iter.hasNext()+".z");
+							World w = player.getWorld();
+							Block cb = w.getBlockAt(cx, cy, cz);
+							Chest chst = (Chest)cb.getState();
+							Inventory tchst = chst.getInventory();
+							tchst.setContents(mainstack);
+							player.sendMessage(iter.hasNext()+" Synced with Main Chest "+dc+".");
 					}
 				}
 				
@@ -135,13 +124,10 @@ public class WirelessChests extends JavaPlugin {
 					player.sendMessage("Error! You haven't set a Main chest yet. Do so with /dchest [chest name] [group name]");
 				}
 				
-				
-				
-				
 			}
-			}
+				
 			return true;
-		}
+			}
 
 		if(cmd.getName().equalsIgnoreCase("namechest")){
 			if(player == null) {
