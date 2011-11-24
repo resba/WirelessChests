@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -101,6 +102,7 @@ public class WirelessChests extends JavaPlugin {
 					player.sendMessage("Error! Main Chest is not located here! Are you sure your in the same world as the chest?");
 				}else{
 					Inventory maininv = dchst.getInventory();
+					ItemStack[] mainstack = maininv.getContents();
 				
 				
 					Set<String> keys = this.getConfig().getConfigurationSection("group."+group).getKeys(false);
@@ -120,9 +122,8 @@ public class WirelessChests extends JavaPlugin {
 							if(bty != 54){
 								player.sendMessage("Error! Chest is not located here! Are you sure your in the same world as the chest?");
 								}else{
-								@SuppressWarnings("unused")
 								Inventory tchst = chst.getInventory();
-								tchst = maininv;
+								tchst.setContents(mainstack);
 								player.sendMessage(cnam+" Synced with Main Chest "+dc+".");
 						
 					}
