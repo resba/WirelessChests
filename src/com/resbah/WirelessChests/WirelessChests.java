@@ -11,8 +11,10 @@ import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class WirelessChests extends JavaPlugin {
@@ -20,6 +22,10 @@ public class WirelessChests extends JavaPlugin {
 	
 	public void onEnable(){
 		log.info("WirelessChests has been Enabled");
+		PluginManager pm = this.getServer().getPluginManager();
+		pm.registerEvent(Event.Type.BLOCK_PLACE, blockListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Event.Priority.Normal, this);
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
 	}
@@ -63,7 +69,7 @@ public class WirelessChests extends JavaPlugin {
 				sender.sendMessage("this command can only be run by a player");
 			} else {
 				if(player.hasPermission("wirelesschests.removegroup")){
-	    		if(args.length == 2){
+	    		if(args.length == 1){
 	    			String group = args[1];
 	    			this.getConfig().set("group."+group, null);
 	    			this.getConfig().set("defaults."+group,null);
@@ -204,5 +210,5 @@ public class WirelessChests extends JavaPlugin {
 		}
 		return false;
 	}
-
+	private final WirelessChestsBlockListener blockListener = new WirelessChestsBlockListener(this);
 }
