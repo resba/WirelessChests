@@ -86,8 +86,8 @@ public class WirelessChests extends JavaPlugin {
 			
 		if (cmd.getName().equalsIgnoreCase("wcabout")){
 			if(player.hasPermission("wirelesschests.about")){
-				sender.sendMessage("WirelessChests by resba");
-				sender.sendMessage("Version 0.0.3-ALPHA");
+				sender.sendMessage(this.getDescription().getName());
+				sender.sendMessage(this.getDescription().getVersion());
 				sender.sendMessage("https://www.github.com/resba/WirelessChests");
 			}else{
 				player.sendMessage("You do not have permission to preform this command!");
@@ -136,6 +136,7 @@ public class WirelessChests extends JavaPlugin {
 				int dz = this.getConfig().getInt("group."+group+"."+dc+".z");
 				World dw = player.getWorld();
 				Block db = dw.getBlockAt(dx, dy, dz);
+				if(db.getTypeId() == 54){
 				Chest dchst = (Chest)db.getState();
 				Inventory maininv = dchst.getInventory();
 				ItemStack[] mainstack = maininv.getContents();
@@ -157,9 +158,11 @@ public class WirelessChests extends JavaPlugin {
 					}
 				}
 				
-				
 				}else{
-					player.sendMessage("Error! You haven't set a Main chest yet. Do so with /wcsync [chest name] [group name]");
+					player.sendMessage("Error! The main chest of this group is missing or has been deleted.");
+				}
+				}else{
+					player.sendMessage("Error! You haven't set a Main chest yet. Do so with /wcsetmain [chest name] [group name]");
 				}
 				
 			}else{
