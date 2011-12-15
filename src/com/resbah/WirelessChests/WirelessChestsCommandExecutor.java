@@ -11,7 +11,7 @@ import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -23,18 +23,6 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 	private WirelessChests plugin;
 	public WirelessChestsCommandExecutor(WirelessChests plugin){
 		this.plugin = plugin;
-	}
-	public FileConfiguration getConfig(){
-		
-		return getConfig(); 
-	}
-	public FileConfiguration saveConfig(){
-		
-		return saveConfig(); 
-	}
-	public FileConfiguration reloadConfig(){
-		
-		return reloadConfig(); 
 	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
@@ -50,7 +38,7 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 	    		if(args.length == 2){
 	    			String chest = args[0];
 	    			String group = args[1];
-	    			this.getConfig().set("group."+group+"."+chest, null);
+	    			getConfig().set("group."+group+"."+chest, null);
 	    			player.sendMessage("Chest removed successfully!");
 	    			if(this.getConfig().getString("defaults."+group) == chest){
 	    				this.getConfig().set("defaults."+group,null);
@@ -211,5 +199,14 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 			return true;
 		}
 		return false;
+	}
+	private Configuration getConfig() {
+		return (Configuration) getConfig();
+	}
+	private Configuration saveConfig() {
+		return (Configuration) saveConfig();
+	}
+	private Configuration reloadConfig() {
+		return (Configuration) reloadConfig();
 	}
 }
