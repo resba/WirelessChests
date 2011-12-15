@@ -1,40 +1,59 @@
 package com.resbah.WirelessChests.event;
 
 import org.bukkit.block.Chest;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 
 public class ChestInventoryTransaction extends Event implements Cancellable {
 
 	/**
-	 * 
+	 * Called when an inventory transaction occurs in a chest.
+	 * If a Chest Inventory Transaction event is canceled, the transaction will not break.
 	 */
 	private static final long serialVersionUID = -1307408375583161287L;
 	private Chest chest;
 	private Inventory inventory;
-	private ItemStack[] itmstk;
 	private boolean cancelled;
+	private Player player;
 
-	protected ChestInventoryTransaction(Chest chest, Inventory inventory, ItemStack[] itmstk) {
+	protected ChestInventoryTransaction(Player player, Chest chest, Inventory inventory) {
 		super(Type.INVENTORY_TRANSACTION);
 		this.chest = chest;
 		this.inventory = inventory;
-		this.itmstk = itmstk;
 		this.cancelled = false;
+		this.player = player;
 	}
+	
+    /**
+     * Gets the Player that is initiating or finishing the transaction.
+     *
+     * @return The Player involved in the event.
+     */
 
+	public Player getPlayer(){
+		return player;
+	}
+	
+    /**
+     * Gets the Chest involved in the Inventory Transaction.
+     *
+     * @return The Chest involved in the event.
+     */
+	
 	public Chest getChest(){
 		return chest;
 	}
 	
+    /**
+     * Gets the <b>Chest</b> Inventory involved in the Inventory Transaction.
+     *
+     * @return The <b>Chest</b> Inventory involved in the event.
+     */
+	
 	public Inventory getInventory() {
 		return inventory;
-	}
-	
-	public ItemStack[] getItemStack() {
-		return itmstk;
 	}
 	
 	@Override
