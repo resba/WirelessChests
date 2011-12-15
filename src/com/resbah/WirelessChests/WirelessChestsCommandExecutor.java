@@ -11,7 +11,6 @@ import org.bukkit.block.Chest;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class WirelessChestsCommandExecutor implements CommandExecutor {
-	@SuppressWarnings("unused")
 	private WirelessChests plugin;
 	public WirelessChestsCommandExecutor(WirelessChests plugin){
 		this.plugin = plugin;
@@ -38,14 +36,14 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 	    		if(args.length == 2){
 	    			String chest = args[0];
 	    			String group = args[1];
-	    			getConfig().set("group."+group+"."+chest, null);
+	    			plugin.getConfig().set("group."+group+"."+chest, null);
 	    			player.sendMessage("Chest removed successfully!");
-	    			if(this.getConfig().getString("defaults."+group) == chest){
-	    				this.getConfig().set("defaults."+group,null);
+	    			if(plugin.getConfig().getString("defaults."+group) == chest){
+	    				plugin.getConfig().set("defaults."+group,null);
 	    				player.sendMessage("Chest was a Main chest. Removed from Main Chest List Successfully!");
 	    			}
-	    			this.saveConfig();
-	    			this.reloadConfig();
+	    			plugin.saveConfig();
+	    			plugin.reloadConfig();
 	    		}
 			}else{
 				player.sendMessage("You do not have permission to preform this command!");
@@ -61,12 +59,12 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 				if(player.hasPermission("wirelesschests.removegroup")){
 	    		if(args.length == 1){
 	    			String group = args[1];
-	    			this.getConfig().set("group."+group, null);
-	    			this.getConfig().set("defaults."+group,null);
+	    			plugin.getConfig().set("group."+group, null);
+	    			plugin.getConfig().set("defaults."+group,null);
 	    			player.sendMessage("Group removed successfully!");
 	    		}
-	    			this.saveConfig();
-	    			this.reloadConfig();
+	    			plugin.saveConfig();
+	    			plugin.reloadConfig();
 	    		}else{
 					player.sendMessage("You do not have permission to preform this command!");
 				}
@@ -92,12 +90,12 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 	    		if(args.length == 2){
 	    			String group = args[1];
 	    			String chest = args[0];
-	    			if(this.getConfig().get("group."+group) != null){
-	    				if(this.getConfig().get("group."+group+"."+chest) != null){
-	    					this.getConfig().set("defaults."+group, chest);
+	    			if(plugin.getConfig().get("group."+group) != null){
+	    				if(plugin.getConfig().get("group."+group+"."+chest) != null){
+	    					plugin.getConfig().set("defaults."+group, chest);
 	    					player.sendMessage("Done!");
-	    					this.saveConfig();
-	    					this.reloadConfig();
+	    					plugin.saveConfig();
+	    					plugin.reloadConfig();
 	    				}else{
 	    					player.sendMessage("Chest does not exist!");
 	    				}
@@ -119,11 +117,11 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 				if(player.hasPermission("wirelesschests.sync")){
 			if(args.length == 1){
 				String group = args[0];
-				if(this.getConfig().getString("defaults."+group) != null){
-				String dc = this.getConfig().getString("defaults."+group);
-				int dx = this.getConfig().getInt("group."+group+"."+dc+".x");
-				int dy = this.getConfig().getInt("group."+group+"."+dc+".y");
-				int dz = this.getConfig().getInt("group."+group+"."+dc+".z");
+				if(plugin.getConfig().getString("defaults."+group) != null){
+				String dc = plugin.getConfig().getString("defaults."+group);
+				int dx = plugin.getConfig().getInt("group."+group+"."+dc+".x");
+				int dy = plugin.getConfig().getInt("group."+group+"."+dc+".y");
+				int dz = plugin.getConfig().getInt("group."+group+"."+dc+".z");
 				World dw = player.getWorld();
 				Block db = dw.getBlockAt(dx, dy, dz);
 				Chest dchst = (Chest)db.getState();
@@ -131,13 +129,13 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 				ItemStack[] mainstack = maininv.getContents();
 				
 				
-					Set<String> keys = this.getConfig().getConfigurationSection("group."+group).getKeys(false);
+					Set<String> keys = plugin.getConfig().getConfigurationSection("group."+group).getKeys(false);
 					Iterator<String> iter = keys.iterator();
 						while (iter.hasNext()) {
 							String cnames = iter.next();
-							int x = this.getConfig().getInt("group."+group+"."+cnames+".x");
-							int y = this.getConfig().getInt("group."+group+"."+cnames+".y");
-							int z = this.getConfig().getInt("group."+group+"."+cnames+".z");
+							int x = plugin.getConfig().getInt("group."+group+"."+cnames+".x");
+							int y = plugin.getConfig().getInt("group."+group+"."+cnames+".y");
+							int z = plugin.getConfig().getInt("group."+group+"."+cnames+".z");
 							World w = player.getWorld();
 							Block b = w.getBlockAt(x, y, z);
 							Chest chst = (Chest)b.getState();
@@ -178,16 +176,16 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 			b.setType(Material.CHEST);
 			}
 			player.sendMessage("Created chest "+chestname+" inside group "+groupname+"!");
-			this.getConfig().set("chest." + chestname, chestname);
-			if (this.getConfig().get("group." + groupname) == null){
-			this.getConfig().set("group." + groupname, true);
+			plugin.getConfig().set("chest." + chestname, chestname);
+			if (plugin.getConfig().get("group." + groupname) == null){
+			plugin.getConfig().set("group." + groupname, true);
 			}
-			this.getConfig().set("group." + groupname +"."+chestname+".chestname", chestname);
-			this.getConfig().set("group." + groupname +"."+chestname+".x", loc.getBlockX());
-			this.getConfig().set("group." + groupname +"."+chestname+".y", loc.getBlockY());
-			this.getConfig().set("group." + groupname +"."+chestname+".z", loc.getBlockZ());
-			this.saveConfig();
-			this.reloadConfig();
+			plugin.getConfig().set("group." + groupname +"."+chestname+".chestname", chestname);
+			plugin.getConfig().set("group." + groupname +"."+chestname+".x", loc.getBlockX());
+			plugin.getConfig().set("group." + groupname +"."+chestname+".y", loc.getBlockY());
+			plugin.getConfig().set("group." + groupname +"."+chestname+".z", loc.getBlockZ());
+			plugin.saveConfig();
+			plugin.reloadConfig();
 			}else{
 				player.sendMessage("Sorry! Your formatting is invalid. Please try again.");
 				return false;
@@ -199,14 +197,5 @@ public class WirelessChestsCommandExecutor implements CommandExecutor {
 			return true;
 		}
 		return false;
-	}
-	private Configuration getConfig() {
-		return (Configuration) getConfig();
-	}
-	private Configuration saveConfig() {
-		return (Configuration) saveConfig();
-	}
-	private Configuration reloadConfig() {
-		return (Configuration) reloadConfig();
 	}
 }
