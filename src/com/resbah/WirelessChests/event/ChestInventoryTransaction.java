@@ -12,11 +12,8 @@ public class ChestInventoryTransaction extends Event implements Cancellable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1307408375583161287L;
-	@SuppressWarnings("unused")
 	private Chest chest;
-	@SuppressWarnings("unused")
 	private Inventory inventory;
-	@SuppressWarnings("unused")
 	private ItemStack[] itmstk;
 	private boolean cancelled;
 
@@ -28,6 +25,18 @@ public class ChestInventoryTransaction extends Event implements Cancellable {
 		this.cancelled = false;
 	}
 
+	public Chest getChest(){
+		return chest;
+	}
+	
+	public Inventory getInventory() {
+		return inventory;
+	}
+	
+	public ItemStack[] getItemStack() {
+		return itmstk;
+	}
+	
 	@Override
 	public boolean isCancelled() {
 		return cancelled;
