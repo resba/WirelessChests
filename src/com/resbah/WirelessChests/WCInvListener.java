@@ -2,12 +2,13 @@ package com.resbah.WirelessChests;
 
 import org.bukkit.block.Chest;
 import org.bukkit.entity.Player;
+import org.bukkit.event.CustomEventListener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.resbah.WirelessChests.event.ChestInventoryTransaction;
 
-public class WCInvListener {
+public class WCInvListener extends CustomEventListener{
     public static WirelessChests plugin;
     
     public WCInvListener(WirelessChests instance) {
