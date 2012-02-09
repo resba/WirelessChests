@@ -19,7 +19,7 @@ public class ChestInventoryTransaction extends Event implements Cancellable {
 	private Player player;
 
 	protected ChestInventoryTransaction(Player player, Chest chest, Inventory inventory) {
-		super(Type.CUSTOM_EVENT);
+		super(Type.ENTITY_INTERACT);
 		this.chest = chest;
 		this.inventory = inventory;
 		this.cancelled = false;
